@@ -1,0 +1,30 @@
+version: "3.4"
+
+services:
+  db:
+    image: mongo
+    restart: always
+    container_name: "mltstation-db"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mlt-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
+
+  api-realdebrid:
+    container_name: "mltstation-api-realdebrid"
+    image: elypso/mlt.api.realdebrid:latest
+    ports:
+      - "5120:80"
+    environment:      
+      RealDebridParams__Token: "${REALDEBRID_TOKEN}"
+    links:
+      - "db:database"
+
+volumes:
+  mlt-data:
+    driver: local
+
+

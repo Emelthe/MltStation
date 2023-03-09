@@ -102,3 +102,15 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Rider files
+.idea/
+
+# C# folders
+bin/
+obj/
+.angular/
+appsettings.Development.json
+
+
+*.DotSettings.user

@@ -1,0 +1,44 @@
+version: "3.4"
+
+services:
+  db:
+    image: mongo
+    restart: always
+    container_name: "mltstation-db"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mlt-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+
+  api-realdebrid:
+    container_name: "mltstation-api-realdebrid"
+    build:
+      dockerfile: service.Dockerfile
+      args:
+        - API_NAME=Mlt.Api.RealDebrid  
+    ports:
+      - "5120:80"
+    environment:      
+      RealDebridParams__Token: "${REALDEBRID_TOKEN}"
+#    links:
+#      - "db:database"
+
+  api-rss:
+    container_name: "mltstation-api-rss"
+    build:
+      dockerfile: service.Dockerfile
+      args:
+        - API_NAME=Mlt.Api.Rss
+    ports:
+      - "5110:80"
+#    links:
+#      - "db:database"
+
+volumes:
+  mlt-data:
+    driver: local
+
+
